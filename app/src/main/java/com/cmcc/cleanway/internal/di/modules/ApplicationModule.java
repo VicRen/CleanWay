@@ -15,77 +15,83 @@
  */
 package com.cmcc.cleanway.internal.di.modules;
 
+import android.app.Application;
 import android.content.Context;
 
-import com.cmcc.cleanway.AndroidApplication;
 import com.cmcc.cleanway.UIThread;
-import com.juphoon.data.cache.UserCache;
-import com.juphoon.data.cache.UserCacheImpl;
 import com.juphoon.data.executor.JobExecutor;
-import com.juphoon.data.repository.ClientDataRepository;
-import com.juphoon.data.repository.UserDataRepository;
-import com.juphoon.data.web.client.ClientApi;
-import com.juphoon.data.web.client.ClientApiImpl;
 import com.juphoon.domain.executor.PostExecutionThread;
 import com.juphoon.domain.executor.ThreadExecutor;
-import com.juphoon.domain.repository.ClientRepository;
-import com.juphoon.domain.repository.UserRepository;
 
 import javax.inject.Singleton;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 /**
  * Dagger module that provides objects which will live during the application lifecycle.
  */
 @Module
-public class ApplicationModule {
-    private final AndroidApplication application;
+public abstract class ApplicationModule {
 
-    public ApplicationModule(AndroidApplication application) {
-        this.application = application;
-    }
-
-    @Provides
+    //expose Application as an injectable context
     @Singleton
-    Context provideApplicationContext() {
-        return this.application;
-    }
+    @Binds
+    abstract Context provideApplicationContext(Application application);
 
-    @Provides
     @Singleton
-    ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
-        return jobExecutor;
-    }
+    @Binds
+    abstract ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor);
 
-    @Provides
     @Singleton
-    PostExecutionThread providePostExecutionThread(UIThread uiThread) {
-        return uiThread;
-    }
+    @Binds
+    abstract PostExecutionThread providePostExecutionThread(UIThread uiThread);
 
-    @Provides
-    @Singleton
-    ClientApi provideClientApi(ClientApiImpl clientApi) {
-        return clientApi;
-    }
-
-    @Provides
-    @Singleton
-    UserCache provideFreeContactCache(UserCacheImpl freeContactCache) {
-        return freeContactCache;
-    }
-
-    @Provides
-    @Singleton
-    UserRepository provideUserRepository(UserDataRepository userDataRepository) {
-        return userDataRepository;
-    }
-
-    @Provides
-    @Singleton
-    ClientRepository provideClientRepository(ClientDataRepository clientDataRepository) {
-        return clientDataRepository;
-    }
+//    private final AndroidApplication application;
+//
+//    public ApplicationModule(AndroidApplication application) {
+//        this.application = application;
+//    }
+//
+//    @Provides
+//    @Singleton
+//    Context provideApplicationContext() {
+//        return this.application;
+//    }
+//
+//    @Provides
+//    @Singleton
+//    ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
+//        return jobExecutor;
+//    }
+//
+//    @Provides
+//    @Singleton
+//    PostExecutionThread providePostExecutionThread(UIThread uiThread) {
+//        return uiThread;
+//    }
+//
+//    @Provides
+//    @Singleton
+//    ClientApi provideClientApi(ClientApiImpl clientApi) {
+//        return clientApi;
+//    }
+//
+//    @Provides
+//    @Singleton
+//    UserCache provideFreeContactCache(UserCacheImpl freeContactCache) {
+//        return freeContactCache;
+//    }
+//
+//    @Provides
+//    @Singleton
+//    UserRepository provideUserRepository(UserDataRepository userDataRepository) {
+//        return userDataRepository;
+//    }
+//
+//    @Provides
+//    @Singleton
+//    ClientRepository provideClientRepository(ClientDataRepository clientDataRepository) {
+//        return clientDataRepository;
+//    }
 }

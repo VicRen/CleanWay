@@ -3,11 +3,15 @@ package com.juphoon.domain.interactor;
 import com.juphoon.domain.executor.PostExecutionThread;
 import com.juphoon.domain.executor.ThreadExecutor;
 import com.juphoon.domain.repository.ClientRepository;
+import com.juphoon.domain.utils.StringUtils;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 public class ClientLogin extends UseCase<String, ClientLogin.Param> {
 
@@ -22,10 +26,19 @@ public class ClientLogin extends UseCase<String, ClientLogin.Param> {
 
     @Override
     Observable<String> buildUseCaseObservable(Param param) {
-        return clientRepository.login(param.userId).doOnNext(new Consumer<String>() {
+        return clientRepository.user().flatMap(new Function<String, ObservableSource<String>>() {
             @Override
-            public void accept(String id) throws Exception {
-                System.out.println("RxJava Thread:" + Thread.currentThread().getName() + " message:buildUseCaseObservable.login.accept:" + id);
+            public ObservableSource<String> apply(@NonNull String s) throws Exception {
+                if (StringUtils.isEmpty(s)) {
+                    return Observable.error(new Exception());
+                }
+                return clientRepository.login(s)
+                        .doOnNext(new Consumer<String>() {
+                            @Override
+                            public void accept(String s) throws Exception {
+                                System.out.println("RxJava Thread:" + Thread.currentThread().getName() + " message:buildUseCaseObservable.login.accept:" + s);
+                            }
+                        });
             }
         });
     }

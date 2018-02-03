@@ -54,6 +54,7 @@ dependencies {
     compile dataDependencies.rxJava
     compile dataDependencies.rxAndroid
     compile dataDependencies.androidAnnotations
+    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     testCompile testDependencies.junit

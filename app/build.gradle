@@ -36,7 +36,9 @@ dependencies {
     compile project(':domain')
 
     apt presentationDependencies.daggerCompiler
-    compile presentationDependencies.dagger
+    compile presentationDependencies.daggerAndroid
+    compile presentationDependencies.daggerAndroidSpt
+    apt presentationDependencies.daggerProcessor
     compile presentationDependencies.butterKnife
     compile presentationDependencies.recyclerView
     compile presentationDependencies.rxJava
@@ -46,8 +48,8 @@ dependencies {
     androidTestCompile presentationTestDependencies.mockito
     androidTestCompile presentationTestDependencies.dexmaker
     androidTestCompile presentationTestDependencies.dexmakerMockito
-    androidTestCompile presentationTestDependencies.espresso
-    androidTestCompile presentationTestDependencies.testingSupportLib
+//    androidTestCompile presentationTestDependencies.espresso
+//    androidTestCompile presentationTestDependencies.testingSupportLib
 
     //Development
     compile developmentDependencies.leakCanary

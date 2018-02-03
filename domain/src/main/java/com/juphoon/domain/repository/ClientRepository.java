@@ -6,6 +6,8 @@ import io.reactivex.Observable;
 
 public interface ClientRepository {
 
+    Observable<String> user();
+
     Observable<String> login(final String userId);
 
     Observable<Integer> status();
@@ -13,4 +15,6 @@ public interface ClientRepository {
     Observable<String> ownAccountPhone();
 
     Observable<User> account();
+
+    Observable<String> listenEvent();
 }

@@ -15,33 +15,42 @@
  */
 package com.cmcc.cleanway.internal.di.components;
 
-import android.content.Context;
+import android.app.Application;
 
-import com.cmcc.cleanway.MainActivity;
+import com.cmcc.cleanway.internal.di.modules.ActivityBindingModule;
 import com.cmcc.cleanway.internal.di.modules.ApplicationModule;
-import com.juphoon.data.web.client.ClientApi;
-import com.juphoon.domain.executor.PostExecutionThread;
-import com.juphoon.domain.executor.ThreadExecutor;
-import com.juphoon.domain.repository.ClientRepository;
-import com.juphoon.domain.repository.UserRepository;
+import com.cmcc.cleanway.internal.di.modules.ClientRepositoryModule;
+import com.cmcc.cleanway.internal.di.modules.ServiceBindingModule;
 
 import javax.inject.Singleton;
 
+import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
  * A component whose lifetime is the life of the application.
  */
 @Singleton // Constraints this component to one-per-application or unscoped bindings.
-@Component(modules = ApplicationModule.class)
-public interface ApplicationComponent {
-  void inject(MainActivity baseActivity);
+@Component(modules = {
+        ApplicationModule.class,
+        ClientRepositoryModule.class,
+        ActivityBindingModule.class,
+        ServiceBindingModule.class,
+        AndroidSupportInjectionModule.class})
+public interface AppComponent extends AndroidInjector<DaggerApplication> {
 
-  //Exposed to sub-graphs.
-  Context context();
-  ThreadExecutor threadExecutor();
-  PostExecutionThread postExecutionThread();
-  ClientApi clientApi();
-  UserRepository userRepository();
-  ClientRepository clientRepository();
+    @Override
+    void inject(DaggerApplication instance);
+
+    @Component.Builder
+    interface Builder {
+
+        @BindsInstance
+        AppComponent.Builder application(Application application);
+
+        AppComponent build();
+    }
 }

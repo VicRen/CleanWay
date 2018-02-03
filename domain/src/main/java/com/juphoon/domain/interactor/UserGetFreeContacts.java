@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
@@ -22,7 +20,6 @@ public class UserGetFreeContacts extends UseCase<List<User>, Void> {
     private final ClientRepository clientRepository;
     private final UserRepository userRepository;
 
-    @Inject
     UserGetFreeContacts(ClientRepository clientRepository, UserRepository userRepository,
                         ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
